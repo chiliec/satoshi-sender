@@ -1,14 +1,18 @@
 import { openWallet } from "./ton";
 import { getMiningData, mine } from "./mining";
 import { config } from "./config";
+import { randomNumber } from "./random";
 
-const blocksToWait = 6;
+const minBlocksToWait = 6;
+const maxBlocksToWait = 10;
 
 async function main() {
   const wallet = await openWallet(config().mnemonic.split(" "));
   const receiverAddress = wallet.contract.address.toString();
   while (true) {
     try {
+      const blocksToWait = randomNumber(minBlocksToWait, maxBlocksToWait);
+
       const data = await getMiningData();
       const lastBlockTime = Number(data.lastBlockTimestamp);
 
