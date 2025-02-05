@@ -19,6 +19,8 @@ async function main() {
       const timeDifferenceMinutes = (currentTime - lastBlockTime) / 60;
       const minutesToWait = blocksToWait * 10;
 
+      console.log(`\nОжидаем ${minutesToWait} минут`)
+
       if (timeDifferenceMinutes >= minutesToWait) {
         console.log(`Прошли необходимые ${Math.floor(timeDifferenceMinutes)} минут с последнего блока. Майним!`);
         await mine(wallet, receiverAddress);
