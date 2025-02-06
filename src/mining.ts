@@ -1,5 +1,6 @@
 import { beginCell, Address, toNano, internal } from "@ton/ton";
 import { OpenedWallet, tonClient } from "./ton";
+import { Logger } from "./logger";
 
 export async function getMiningData() {
     try {
@@ -12,7 +13,7 @@ export async function getMiningData() {
         const probability = stack.readBigNumber();
         return { blockNumber, lastBlockTimestamp, miningAttempts, reward, probability };
     } catch (error) {
-        console.error("Ошибка при получении майнинговых данных:", error);
+        Logger.error("Ошибка при получении майнинговых данных:", error);
     }
 }
 
@@ -38,6 +39,6 @@ export async function mine(wallet: OpenedWallet, receiverAddress: string) {
         ]
     });
 
-    console.log("Транзакция отправлена:", result);
+    Logger.log("Транзакция отправлена:", result);
     return result;
 }

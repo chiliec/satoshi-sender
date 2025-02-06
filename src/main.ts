@@ -2,9 +2,10 @@ import { openWallet } from "./ton";
 import { getMiningData, mine } from "./mining";
 import { config } from "./config";
 import { randomNumber } from "./random";
+import { Logger } from "./logger";
 
 const minBlocksToWait = 3;
-const maxBlocksToWait = 15;
+const maxBlocksToWait = 12;
 
 async function main() {
   const wallet = await openWallet(config().mnemonic.split(" "));
@@ -19,13 +20,13 @@ async function main() {
       const timeDifferenceMinutes = (currentTime - lastBlockTime) / 60;
       const minutesToWait = blocksToWait * 10;
 
-      console.log(`\nОжидаем ${minutesToWait} минут`)
+      Logger.log(`Ожидаем ${minutesToWait} минут`)
 
       if (timeDifferenceMinutes >= minutesToWait) {
-        console.log(`Прошли необходимые ${Math.floor(timeDifferenceMinutes)} минут с последнего блока. Майним!`);
+        Logger.log(`Прошли необходимые ${Math.floor(timeDifferenceMinutes)} минут с последнего блока. Майним!`);
         await mine(wallet, receiverAddress);
       } else {
-        console.log(`Прошло ${Math.floor(timeDifferenceMinutes)} минут с последнего блока.`);
+        Logger.log(`Прошло ${Math.floor(timeDifferenceMinutes)} минут с последнего блока.`);
       }
 
       const tenMinutesInSeconds = 10 * 60;
@@ -36,14 +37,14 @@ async function main() {
         throw new Error('Не удалось определить время до следующей отметки от времени последнего блока');
       }
 
-      console.log(`Следующая проверка через ${Math.floor(timeToNextCheck)} секунд`);
+      Logger.log(`Следующая проверка через ${Math.floor(timeToNextCheck)} секунд`);
       await new Promise(resolve => setTimeout(resolve, timeToNextCheck * 1000));
 
     } catch (error) {
-      console.error('Произошла ошибка:', error);
+      Logger.error('Произошла ошибка:', error);
       await new Promise(resolve => setTimeout(resolve, 60 * 1000));
     }
   }
 }
 
-main().catch(console.error);
+main().catch(Logger.error);
