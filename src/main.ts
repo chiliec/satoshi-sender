@@ -11,6 +11,8 @@ async function main() {
   const wallet = await openWallet(config().mnemonic.split(" "));
   const receiverAddress = wallet.contract.address.toString();
 
+  Logger.log(`Ожидаем майнинг от ${minBlocksToWait * 10} до ${maxBlocksToWait * 10} минут`);
+
   while (true) {
     try {
       const blocksToWait = randomNumber(minBlocksToWait, maxBlocksToWait);
