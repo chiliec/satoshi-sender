@@ -8,4 +8,6 @@ USER node
 
 COPY --chown=node:node . .
 
+RUN npm ci --omit=dev
+
 CMD [ "npm", "run", "start" ]
