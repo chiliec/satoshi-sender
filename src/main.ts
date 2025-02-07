@@ -4,11 +4,10 @@ import { config } from "./config";
 import { randomNumber } from "./random";
 import { Logger } from "./logger";
 
-const minBlocksToWait = 3;
-const maxBlocksToWait = 12;
 
 async function main() {
-  const wallet = await openWallet(config().mnemonic.split(" "));
+  const { mnemonic, minBlocksToWait, maxBlocksToWait } = config();
+  const wallet = await openWallet(mnemonic);
   const receiverAddress = wallet.contract.address.toString();
 
   Logger.log(`Ожидаем майнинг от ${minBlocksToWait * 10} до ${maxBlocksToWait * 10} минут`);
