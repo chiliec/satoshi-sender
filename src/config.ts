@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export function config(): { apiKey: string, mnemonic: string[], minBlocksToWait: number, maxBlocksToWait: number } {
+export function config(): { apiKey: string, mnemonic: string[], minBlocksToWait: number, maxBlocksToWait: number, receiverAddress: string } {
     const apiKey = process.env.TONCENTER_API_KEY
     if (!apiKey) {
         throw new Error("TONCENTER_API_KEY не установлен")
@@ -19,7 +19,6 @@ export function config(): { apiKey: string, mnemonic: string[], minBlocksToWait:
     if (!maxBlocksToWait) {
         throw new Error("MAX_BLOCKS_TO_WAIT не установлен")
     }
-
     const minBlocksToWaitNum = Number.parseInt(minBlocksToWait)
     if (isNaN(minBlocksToWaitNum)) {
         throw new Error("MIN_BLOCKS_TO_WAIT должен быть числом")
@@ -32,5 +31,9 @@ export function config(): { apiKey: string, mnemonic: string[], minBlocksToWait:
     if (mnemonicArray.length !== 24) {
         throw new Error("MNEMONIC должен содержать 24 слова")
     }
-    return { apiKey, mnemonic: mnemonicArray, minBlocksToWait: minBlocksToWaitNum, maxBlocksToWait: maxBlocksToWaitNum }
+    const receiverAddress = process.env.RECEIVER_ADDRESS
+    if (!receiverAddress) {
+        throw new Error("RECEIVER_ADDRESS не установлен")
+    }
+    return { apiKey, mnemonic: mnemonicArray, minBlocksToWait: minBlocksToWaitNum, maxBlocksToWait: maxBlocksToWaitNum, receiverAddress: receiverAddress }
 }

@@ -6,9 +6,8 @@ import { Logger } from "./logger";
 
 
 async function main() {
-  const { mnemonic, minBlocksToWait, maxBlocksToWait } = config();
+  const { mnemonic, minBlocksToWait, maxBlocksToWait, receiverAddress } = config();
   const wallet = await openWallet(mnemonic);
-  const receiverAddress = wallet.contract.address.toString();
 
   Logger.log(`Ожидаем майнинг от ${minBlocksToWait * 10} до ${maxBlocksToWait * 10} минут`);
 
